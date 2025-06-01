@@ -7,5 +7,15 @@ export default class AppController {
             message: "Welcome to RideFleet dealership ",
             operations: `${dbClient.isAlive() ? "Fully operational" : "Partially operational" }. Check '/stat' endpoint for more details`,
         });
+        return;
+    }
+
+    static async stat(req: Request, res: Response) {
+        res.status(200).json({
+            name: "RideFleet Dealership API",
+            dbStatus: dbClient.isAlive() ? "Connected" : "Not connected",
+            carsAvailable: await dbClient.db?.collection("cars").countDocuments({ sold: false }) || 'db not connected',
+        });
+        return;
     }
 }
