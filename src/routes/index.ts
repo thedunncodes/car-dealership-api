@@ -5,4 +5,6 @@ const router = Router();
 
 router.get("/", AppController.home);
 
+router.get("/stat", AppController.stat);
+
 export default router;
