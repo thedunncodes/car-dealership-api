@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Db, MongoClient } from 'mongodb';
+import boot from './boot';
 
 /**
  * Database client for MongoDB.
@@ -37,6 +38,7 @@ class DBClient {
             await this.mongoClient.connect();
             this.db = this.mongoClient.db(database);
             this.connected = this.db.databaseName !== DEFAULT_DB_NAME;
+            if (this.connected) await boot(this.db)
         } catch (err) {
             console.error('Failed to connect to MongoDB:', err);
             this.connected = false;
@@ -50,4 +52,5 @@ class DBClient {
 }
 
 const dbClient = new DBClient();
+export type DBClientClass = DBClient;
 export default dbClient;
