@@ -141,4 +141,46 @@ export default class UserController {
         res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
         return;
     }
+
+    static async deleteUser(req: Request, res: Response) {
+        const xToken = req.headers['x-token'];
+
+        if (!xToken) {
+            res.status(401).json({ error: "Unauthorized, no access token provided, procced to '/login' route." });
+            return;
+        }
+        const { validSession, payload } = protectSession(xToken as string);
+        if (!validSession) {
+            res.status(401).json({ error: "Invalid session token, or expired session" });
+            return;
+        }
+
+        if (dbClient.isAlive() && payload.id && payload.email) {
+            const usersColl = dbClient.db?.collection("users");
+            try {
+                const result = await usersColl?.deleteOne({ _id: new ObjectId(payload.id) });
+        
+                if (!result || result.deletedCount === 0) {
+                    res.status(404).json({ error: "User not found" });
+                    return;
+                }
+            } catch {
+                res.status(400).json({ error: "Invalid user Id" });
+                return;
+            }
+            let message = `Your account with id '${payload.id}' has been deleted successfully`;
+            const removed = myCache.del(`jwt:${sha256(payload.email)}`);
+            if (removed === 1) {
+                message = `Your account with id '${payload.id}' and session has been deleted successfully`;
+            }
+
+
+    
+            res.status(200).json({ message });
+            return;
+        }
+
+        res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
+        return;
+    }
 }
