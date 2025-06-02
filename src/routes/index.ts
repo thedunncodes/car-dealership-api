@@ -1,4 +1,5 @@
 import { Router } from "express";
+import AuthController from "../controllers/AuthController";
 import AppController from "../controllers/AppController";
 import UserController from "../controllers/UserController";
 import AdminController from "../controllers/AdminController";
@@ -13,7 +14,7 @@ router.post("/register", UserController.userReg);
 
 router.post("/admin/register/:adminSlug", AdminController.adminReg);
 
-router.post("/login", UserController.login);
+router.post("/login", AuthController.login);
 
 router.get("/admin/staff", AdminController.getStaff);
 
