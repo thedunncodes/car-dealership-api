@@ -1,6 +1,6 @@
 import { Db } from "mongodb";
 import { DateTime } from "luxon";
-import userSchema from "./userSchema";
+import userSchema from "./schema/userSchema";
 import data from "./cars_inventory.json";
 
 /**
@@ -49,8 +49,8 @@ export default async function boot(db: Db) {
         await carsColl.insertMany(data.map(car => ({
             ...car,
             sold: false,
-            createdAt: DateTime.now().toISO(),
-            updatedAt: DateTime.now().toISO(),
+            createdAt: DateTime.utc().toISO(),
+            updatedAt: DateTime.utc().toISO(),
             updatedBy: null
         })));
     }
