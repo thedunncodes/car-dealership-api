@@ -5,6 +5,7 @@ import { loginData } from "../constants/userTypes";
 import validateLoginInputs from "../utils/inputValidations/validateLoginInputs";
 import checkUserExists from "../utils/dbUtils/checkUserExists";
 import protectSession from "../utils/authUtils/protectSession";
+import cacheJWT from "../utils/authUtils/cacheJWT";
 
 export default class AuthController {
     static async login(req: Request, res: Response) {
@@ -28,7 +29,8 @@ export default class AuthController {
         if (dbClient.isAlive()) {
             const userExists = await checkUserExists(email, password);
             if (userExists) {
-                const token = jwt.sign(userExists, process.env.JWT_SECRET_KEY || 'secret-key', { expiresIn: '5m' });            
+                const token = jwt.sign(userExists, process.env.JWT_SECRET_KEY || 'secret-key', { expiresIn: '5m' });   
+                cacheJWT(token, userExists.email);         
     
                 // Cookie is sent to satisfy front end consumption, but for this RESTful API
                 // cookies won't be used for authentication, only JWTs sent in the Authorization header.
