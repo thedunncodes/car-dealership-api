@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import { ObjectId } from 'mongodb';
 import { sha256 } from 'js-sha256';
 import { Request, Response } from 'express';
+import myCache from '../libs/cache';
 import dbClient from '../libs/database/db';
 import protectSession from '../utils/authUtils/protectSession';
 import validateUserInputs from '../utils/inputValidations/validateUserInputs';
@@ -119,9 +120,17 @@ export default class UserController {
         if (dbClient.isAlive() && payload.id) {
             const result = await updateUserData(payload.id, { name, email, password, });
             if (result.updated) {
-                console.log(result);
-                // disconnect on pass change
-                res.status(200).json({ message: "User data updated successfully" });
+                const message = result.passChanged
+                    ? "User data updated successfully, Kindly login again to continue."
+                    : "User data updated successfully";
+                if (result.passChanged && payload.email) {
+                    const removed = myCache.del(`jwt:${sha256(payload.email)}`);
+                    if (removed === 1) {
+                        res.status(200).json({ message });
+                        return;
+                    }
+                }
+                res.status(200).json({ message });
                 return;
             } else {
                 res.status(400).json({ error: result.error });
