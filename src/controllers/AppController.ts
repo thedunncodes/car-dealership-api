@@ -18,4 +18,15 @@ export default class AppController {
         });
         return;
     }
+
+    static async getCars(req: Request, res: Response) {
+        if (dbClient.isAlive()) {
+            const carsColl = dbClient.db?.collection("cars");
+            const cars = await carsColl?.find({ sold: false }).toArray() || [];
+            res.status(200).json(cars);
+            return;
+        }
+        res.status(200).json([]);
+        return;
+    }
 }
