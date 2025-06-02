@@ -16,6 +16,8 @@ router.post("/admin/register/:adminSlug", AdminController.adminReg);
 
 router.post("/login", AuthController.login);
 
+router.get("/logout", AuthController.logout);
+
 router.get("/admin/staff", AdminController.getStaff);
 
 router.delete("/admin/delete/:staffId", AdminController.deleteStaff);
