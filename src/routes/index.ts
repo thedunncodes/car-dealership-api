@@ -1,5 +1,6 @@
 import { Router } from "express";
 import AuthController from "../controllers/AuthController";
+import CarsController from "../controllers/CarsController";
 import AppController from "../controllers/AppController";
 import UserController from "../controllers/UserController";
 import AdminController from "../controllers/AdminController";
@@ -27,5 +28,7 @@ router.get("/user", UserController.getUser);
 router.put("/user/update", UserController.updateUser);
 
 router.delete("/user/delete", UserController.deleteUser);
+
+router.post("/inventory/cars/create", CarsController.createCar)
 
 export default router;
