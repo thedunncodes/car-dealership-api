@@ -29,6 +29,8 @@ router.put("/user/update", UserController.updateUser);
 
 router.delete("/user/delete", UserController.deleteUser);
 
-router.post("/inventory/cars/create", CarsController.createCar)
+router.post("/inventory/cars/create", CarsController.createCar);
+
+router.put("/inventory/cars/update/:carId", CarsController.updateCar);
 
 export default router;
