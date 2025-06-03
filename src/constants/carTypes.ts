@@ -24,3 +24,14 @@ export interface carsUpdateData {
     imgUrl?: string;
     sold?: boolean;
 }
+
+export interface carQueryData {
+    brand?: string;
+    model?: string;
+    bodyType?: string;
+    transmission?: 'manual' | 'automatic';
+    price?: number;
+    fuelType?: 'petrol' | 'diesel' | 'electric' | 'hybrid';
+    mileage?: number;
+    year?: number;
+}
