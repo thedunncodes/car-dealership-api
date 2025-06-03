@@ -188,4 +188,43 @@ export default class UserController {
         res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
         return;
     }
+
+    static async userPurchases(req: Request, res: Response) {
+        const xToken = req.headers['x-token'];
+
+        if (!xToken) {
+            res.status(401).json({ error: "Unauthorized, no access token provided, procced to '/login' route." });
+            return;
+        }
+        const { validSession, payload } = protectSession(xToken as string);
+        if (!validSession) {
+            res.status(401).json({ error: "Invalid session token, or expired session" });
+            return;
+        }
+
+        if (dbClient.isAlive() && payload.id) {
+            const salesColl = dbClient.db?.collection("sales");
+            const data = await salesColl?.find({ buyerId: new ObjectId(payload.id) }).toArray() || [];
+            const purchases = data.map(sale => ({
+                id: sale._id.toString(),
+                carId: sale.carId.toString(),
+                userId: sale.buyerId.toString(),
+                brand: sale.brand,
+                model: sale.model,
+                price: sale.price,
+                amountPaid: sale.amountPaid,
+                boughtAt: sale.soldAt,
+                imgUrl: sale.imgUrl,
+            }));
+
+            res.status(200).json({
+                totalPurchases: data.length,
+                purchases: purchases
+            });
+            return;
+        }
+
+        res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
+        return;
+    }
 }
