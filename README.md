@@ -105,7 +105,16 @@ GET /cars?brand=toyo&bodyType=suv&page=1&size=10
 - The query above would still return all `Toyota` cars and any other brand with `toyo` in its name.
 
 ## Notes
-- All protected routes require an `x-token` header with a valid session token.
+- All protected routes require an `x-token` header with a valid session token. The token is a JWT token returned from the `GET /login` route.
+### `GET /login` response
+```http
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ...." 
+```
+### `x-token` implementation
+```http
+Header:
+"x-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ...." 
+```
 - Admin-only routes require the user to have an admin role.
 - Car fields include: `brand`, `model`, `bodyType`, `transmission`, `fuelType`, `price`, `horsePower`, `mileage`, `year`, `imgUrl`.
 - For full request/response details, see the controller and route files.
