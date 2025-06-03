@@ -29,12 +29,19 @@ This is a simple Node.js/Express RESTful API for managing a car dealership, supp
 4. **Configure environment variables:**
    Create a `.env` file in the root directory and set the following variables:
     - `PORT`: Port for the server (default: `5000`)  
-    - `DB_HOST`: MongoDB database host (default: `localhost`)
-    - `DB_PORT`: MongoDB database port (default: `27017`)
-    - `DB_NAME`: MongoDB database name (default: `no-database-specified`)
     - `ADMIN_SLUG`: Generate Randomly using `UUID4` or Any other way of generating a secure and non readable slug.
     - `JWT_SECRET_KEY`: Generate Randomly using `UUID4` or Any other way of generating a secure key.
     - `NODE_ENV`: Set to `dev` for local development and `production` for production build
+    **If you run your own MongoDb server i.e in a virtual machine like linode**
+      You can connect directly if you have the fields below
+         - `DB_NAME`: MongoDB database name (default: `no-database-specified`)
+         - `DB_HOST`: MongoDB database host (default: `localhost`)
+         - `DB_PORT`: MongoDB database port (default: `27017`)
+
+    **if you are connecting to MongoDb hosted elsewhere through a `uri`**
+      ensure you have the fields below:
+         - `DB_CONNECTION_MODE` must be set to `URI`
+         - `MONGO_URI` must be set to your MongoDb `uri` 
 
 5. **Start the server:**
    ```bash
