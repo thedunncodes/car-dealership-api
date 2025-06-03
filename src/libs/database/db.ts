@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Db, MongoClient } from 'mongodb';
+import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 import boot from './boot';
 
 /**
@@ -23,10 +23,25 @@ class DBClient {
         const host = process.env.DB_HOST || 'localhost';
         const port = process.env.DB_PORT || 27017;
         const database = process.env.DB_NAME || DEFAULT_DB_NAME;
-        const url = `mongodb://${host}:${port}`;
+        const url =  process.env.DB_CONNECTION_MODE === 'URI'
+                ?  process.env.MONGO_URI
+                : `mongodb://${host}:${port}`;
         try {
-            this.mongoClient = new MongoClient(url);
-            this.connect(database);
+            if (url) {
+                if (process.env.DB_CONNECTION_MODE === 'URI') {
+                    this.mongoClient = new MongoClient(url, {
+                        serverApi: {
+                            version: ServerApiVersion.v1,
+                            strict: true,
+                            deprecationErrors: true
+                        }
+                    })
+                    this.connect(database);
+                } else{
+                    this.mongoClient = new MongoClient(url);
+                    this.connect(database);
+                }
+            }
         } catch (err) {
             console.error('Failed to connect to MongoDB:', err);
             this.connected = false;
