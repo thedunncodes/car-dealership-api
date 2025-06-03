@@ -27,6 +27,8 @@ router.get("/user", UserController.getUser);
 
 router.put("/user/update", UserController.updateUser);
 
+router.get("/user/purchases", UserController.userPurchases);
+
 router.delete("/user/delete", UserController.deleteUser);
 
 router.get("/cars", AppController.getCars);
