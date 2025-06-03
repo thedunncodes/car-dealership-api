@@ -16,14 +16,14 @@ export async function modelQuery(model: string) {
 
 export async function bodyTypeQuery(bodyType: string) {
     const validBodyType = [
-        'SUV', 'Hatchback', 'Saloon', 'Coupe',
-        'Convertible', 'Van', 'Pick-up', 'Chassis Cab'
+        'suv', 'hatchback', 'saloon', 'coupe',
+        'convertible', 'van', 'pick-up', 'chassis Cab'
     ].includes(bodyType)
     if (!validBodyType) {
         return [];
     }
     const carColls = dbClient.db?.collection("cars");
-    const carBrands = await carColls?.find({ bodyType, sold: false }).toArray();
+    const carBrands = await carColls?.find({ bodyType: { $regex: `^${bodyType}$`, $options: "i" }, sold: false }).toArray();
 
     return carBrands || [];
 }

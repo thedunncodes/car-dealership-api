@@ -5,8 +5,8 @@ import {
     fuelTypeQuery, yearQuery, priceQuery, mileageQuery
 } from "../dbUtils/carQueries";
 
-export default async function getFieldData(
-    validFields: (keyof carQueryData)[], queryFields: carQueryData) {
+export default async function getFieldData (
+    validFields: (keyof carQueryData)[], queryFields: carQueryData): Promise<WithId<Document>[]> {
     const queryData: WithId<Document>[] = [];
 
     for (const field of validFields) {
