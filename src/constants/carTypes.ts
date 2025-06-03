@@ -22,4 +22,5 @@ export interface carsUpdateData {
     mileage?: number;
     year?: number;
     imgUrl?: string;
+    sold?: boolean;
 }
