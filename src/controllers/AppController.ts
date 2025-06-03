@@ -40,13 +40,13 @@ export default class AppController {
     static async stat(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         let protectedStat = {};
-        const brandsAvailable = await dbClient.db?.collection("cars").distinct("brand", { sold: false }) || [];
+        const brandsAvailable = await dbClient.db?.collection("cars").aggregate([ { $match: { sold: false } }, { $group: { _id: "$brand" } } ]).toArray() || [];
         if (xToken) {
             const { validSession, payload } = protectSession(xToken as string);
             if (validSession) {
                 protectedStat = {
                     noBrandsAvailable: brandsAvailable?.length || 0,
-                    brandsAvailable: brandsAvailable || [],
+                    brandsAvailable: brandsAvailable.map(doc => doc._id) || [],
                     totalNumberOfUsers: payload.role !== 'user' ? (await dbClient.db?.collection("users").countDocuments({}) || 0) : 'Access denied',
                     totalNumberOfStaffs: payload.role !== 'user' ? (await dbClient.db?.collection("users").countDocuments({ role: "staff" }) || 0)  : 'Access denied'
                 };
@@ -55,7 +55,7 @@ export default class AppController {
         } else {
             protectedStat = { 
                 noBrandsAvailable: brandsAvailable?.length || 0,
-                brandsAvailable: brandsAvailable || [],
+                brandsAvailable: brandsAvailable.map(doc => doc._id) || [],
              }
         }
 
