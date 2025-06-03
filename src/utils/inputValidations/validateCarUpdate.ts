@@ -57,5 +57,9 @@ export default function validateCarUpdate(data: carsUpdateData): { error?: strin
     if (!httpCheck && data.imgUrl) {
         return { error: "'imgUrl' field must be a valid URL starting with 'http://' or 'https://'." };
     }
+
+    if (data.sold && typeof data.sold !== 'boolean') {
+        return { error: "'sold' field must be a boolean value." };
+    }
     return { error: null };
 }
