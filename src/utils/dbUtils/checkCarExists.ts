@@ -1,7 +1,7 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId, Document } from "mongodb";
 import dbClient from "../../libs/database/db";
 
-export default async function checkCarExists(carId: string): Promise<{ carData: unknown; carPresent: boolean }> {
+export default async function checkCarExists(carId: string): Promise<{ carData: WithId<Document> | null; carPresent: boolean }> {
     const carColls = dbClient.db?.collection("cars");
     try {
         const car = await carColls?.findOne({ _id: new ObjectId(carId) });
