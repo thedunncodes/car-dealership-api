@@ -186,7 +186,7 @@ export default class CarsController {
     static async buyCar(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         const carId = req.params.carId;
-        const { amountPayed }: { amountPayed: number } = req.body || {};
+        const { amountPaid }: { amountPaid: number } = req.body || {};
                 
         if (!xToken) {
             res.status(401).json({ error: "Unauthorized, no access token provided, procced to '/login' route " });
@@ -216,7 +216,7 @@ export default class CarsController {
                 }
                 carInfo = carData;
 
-                if (typeof amountPayed !== 'number' || amountPayed <= 0) {
+                if (typeof amountPaid !== 'number' || amountPaid <= 0) {
                     res.status(400).json({ error: "Invalid amount provided, it should be a positive number" });
                     return;
                 }
@@ -226,8 +226,8 @@ export default class CarsController {
                     return;
                 }
 
-                if (carInfo && (carInfo.price > amountPayed)) {
-                    res.status(400).json({ error: `Insufficient amount, the car price is $${carInfo.price}, but you provided $${amountPayed}` });
+                if (carInfo && (carInfo.price > amountPaid)) {
+                    res.status(400).json({ error: `Insufficient amount, the car price is $${carInfo.price}, but you provided $${amountPaid}` });
                     return;
                 }
             }
@@ -255,7 +255,7 @@ export default class CarsController {
                     model: carInfo?.model,
                     price: carInfo?.price,
                     imgUrl: carInfo?.imgUrl,
-                    amountPayed,
+                    amountPaid,
                     soldAt: DateTime.utc().toISO(),
                 })
 
