@@ -9,7 +9,23 @@ import checkUserExists from "../utils/dbUtils/checkUserExists";
 import protectSession from "../utils/authUtils/protectSession";
 import cacheJWT from "../utils/authUtils/cacheJWT";
 
+/**
+ * AuthController handles user authentication operations such as login and logout.
+ * It validates user inputs, checks user existence in the database,
+ * generates JWT tokens, and manages user sessions.
+ *
+ * @class AuthController
+ * @static
+ */
+
 export default class AuthController {
+    /**
+     * Logs in a user by validating their credentials and generating a JWT token.
+     * If the user is already logged in, it returns a message indicating so.
+     *
+     * @param {Request} req - The request object containing user credentials.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async login(req: Request, res: Response) {
         const { email, password }: loginData = req.body || {};
         const xToken = req.headers['x-token'];
@@ -40,7 +56,7 @@ export default class AuthController {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: 'strict', 
-                    maxAge: 1000 * 60 * 5 // 5 minutes
+                    maxAge: 1000 * 60 * 60 * 2 // 2hrs
                 }).json({
                     "token": token
                 });
@@ -55,6 +71,13 @@ export default class AuthController {
         return;
     }
 
+    /**
+     * Logs out a user by invalidating their session.
+     * It removes the JWT token from the node-cache based on the user's email.
+     *
+     * @param {Request} req - The request object containing the JWT token in headers.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async logout(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         if (xToken) {
