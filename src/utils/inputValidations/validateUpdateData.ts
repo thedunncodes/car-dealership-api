@@ -1,5 +1,13 @@
 import { userDataUpdate } from "../../constants/userTypes";
 
+/**
+ * This function validates the data provided for updating user information.
+ * It checks if at least one field (email, name, or password) is provided,
+ * ensures that all fields are strings, and checks for valid email format and password length.
+ *
+ * @param {userDataUpdate} data - The data to validate.
+ * @returns {{ error?: string }} - An object containing an error message if validation fails.
+ */
 export default function validateUpdateData(data: userDataUpdate): { error?: string } {
     const result: { error?: string } = {};
 

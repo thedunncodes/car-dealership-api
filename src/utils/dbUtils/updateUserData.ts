@@ -3,6 +3,16 @@ import dbClient from "../../libs/database/db";
 import { userDataUpdate } from "../../constants/userTypes";
 import { sha256 } from "js-sha256";
 
+/**
+ * This function updates user data in the database.
+ * It checks if the new email already exists, compares the new data with the existing data,
+ * and updates only the fields that have changed.
+ * If the password is changed, it hashes the new password before saving it.
+ *
+ * @param {string} userId - The ID of the user to update.
+ * @param {userDataUpdate} newData - The new data to update the user with.
+ * @returns {Promise<{ updated: boolean; changes?: boolean; error?: string; passChanged?: boolean }>} - A promise that resolves to an object indicating the result of the update operation.
+ */
 export default async function updateUserData(
     userId: string, newData: userDataUpdate
   ): Promise<{ updated: boolean; changes?: boolean; error?: string; passChanged?: boolean }> {

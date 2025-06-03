@@ -1,6 +1,15 @@
 import { WithId, Document } from "mongodb";
 import { carQueryData, formattedDataProps } from "../../constants/carTypes";
 
+/**
+ * This function filters the query data based on the provided valid fields and query fields.
+ * It returns an array of filtered data and formatted data.
+ *
+ * @param {WithId<Document>[]} queryData - The array of car documents to filter.
+ * @param {(keyof carQueryData)[]} validFields - The fields that are valid for filtering.
+ * @param {carQueryData} queryFields - The fields to filter by.
+ * @returns {{ filteredData: WithId<Document>[], formattedData: formattedDataProps[] }} - An object containing filtered and formatted data.
+ */
 export default function filterQueryData (
     queryData: WithId<Document>[], validFields: (keyof carQueryData)[],
     queryFields: carQueryData): { filteredData: WithId<Document>[], formattedData: formattedDataProps[] } {

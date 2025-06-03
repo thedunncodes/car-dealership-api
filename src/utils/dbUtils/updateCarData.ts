@@ -3,6 +3,18 @@ import { ObjectId } from "mongodb";
 import { DateTime } from "luxon";
 import { carsUpdateData } from "../../constants/carTypes";
 
+/**
+ * This function updates the car data in the database.
+ * It compares the new data with the existing data and only updates fields that have changed.
+ * If no changes are made, it returns an object indicating no changes were made.
+ * If the update is successful, it returns an object indicating success and whether changes were made.
+ * If an error occurs, it returns an object with an error message and code.
+ *
+ * @param {string} carId - The ID of the car to update.
+ * @param {string} userId - The ID of the 'admin'/'staff' making the update.
+ * @param {carsUpdateData} newData - The new data to update the car with.
+ * @returns {Promise<{ updated: boolean; changes?: boolean; error?: string; code?: number }>} - A promise that resolves to an object indicating the result of the update operation.
+ */
 export default async function updateCarData(
     carId: string, userId: string, newData: carsUpdateData
 ): Promise<{ updated: boolean; changes?: boolean; error?: string; code?: number }> {

@@ -1,3 +1,40 @@
+/**
+ * Main Application Routes
+ * @file index.ts
+ * @description
+ * This file defines all API endpoints for the RideFleet car dealership application.
+ *
+ * Route Overview:
+ * - Home & Status:
+ *   - GET    /                → AppController.home
+ *   - GET    /stat            → AppController.stat
+ *
+ * - User Authentication & Management:
+ *   - POST   /register        → UserController.userReg
+ *   - POST   /login           → AuthController.login
+ *   - GET    /logout          → AuthController.logout
+ *   - GET    /user            → UserController.getUser
+ *   - PUT    /user/update     → UserController.updateUser
+ *   - GET    /user/purchases  → UserController.userPurchases
+ *   - DELETE /user/delete     → UserController.deleteUser
+ *
+ * - Admin Management:
+ *   - POST   /admin/register/:adminSlug → AdminController.adminReg
+ *   - GET    /admin/staff              → AdminController.getStaff
+ *   - DELETE /admin/delete/:staffId    → AdminController.deleteStaff
+ *
+ * - Car Inventory & Sales:
+ *   - GET    /cars                     → AppController.getCars
+ *   - POST   /inventory/cars/create    → CarsController.createCar
+ *   - POST   /inventory/cars/buy/:carId→ CarsController.buyCar
+ *   - GET    /inventory/cars/sales     → AppController.getCarSales
+ *   - PUT    /inventory/cars/update/:carId → CarsController.updateCar
+ *   - DELETE /inventory/cars/delete/:carId → CarsController.deleteCar
+ *
+ * Each route is mapped to its corresponding controller and method for handling business logic.
+ *
+ */
+
 import { Router } from "express";
 import AuthController from "../controllers/AuthController";
 import CarsController from "../controllers/CarsController";

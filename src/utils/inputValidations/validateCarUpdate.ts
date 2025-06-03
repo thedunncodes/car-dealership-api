@@ -1,5 +1,14 @@
 import { carsUpdateData } from "../../constants/carTypes";
 
+/**
+ * This function validates the input data for updating car details.
+ * It checks if at least one field is provided and validates each field according to its type.
+ * If any validation fails, it returns an error message.
+ * If all validations pass, it returns null.
+ *
+ * @param {carsUpdateData} data - The car data to validate.
+ * @returns {{ error?: string | null }} - An object containing an error message or null if validation passes.
+ */
 export default function validateCarUpdate(data: carsUpdateData): { error?: string | null } {
     const { transmission, bodyType, fuelType, year } = data;
     

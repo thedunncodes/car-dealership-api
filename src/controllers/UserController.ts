@@ -10,8 +10,21 @@ import { userData, userDataUpdate } from '../constants/userTypes';
 import updateUserData from '../utils/dbUtils/updateUserData';
 import validateUpdateData from '../utils/inputValidations/validateUpdateData';
 
-
+/**
+ * UserController handles user-related operations such as registration, retrieval,
+ * updating, deletion, and fetching user purchases.
+ *
+ * @class UserController
+ * @static
+ */
 export default class UserController {
+    /**
+     * Registers a new user by validating the input data and checking for existing users.
+     * If the user is already logged in, it returns a message indicating so.
+     *
+     * @param {Request} req - The request object containing user data.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async userReg(req: Request, res: Response) {
         const { name, email, password }: userData = req.body || {};
         const xToken = req.headers['x-token'];
@@ -64,6 +77,13 @@ export default class UserController {
         return;
     }
 
+    /**
+     * Retrieves the current user's information based on the session token.
+     * If the user is not authenticated or the session is invalid, it returns an error.
+     *
+     * @param {Request} req - The request object containing headers.
+     * @param {Response} res - The response object to send back containing the user information.
+     */
     static async getUser(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
 
@@ -97,6 +117,13 @@ export default class UserController {
         return;
     }
 
+    /**
+     * Updates the current user's information based on the provided data.
+     * Validates the session token and checks for valid input data before updating.
+     *
+     * @param {Request} req - The request object containing headers and body data.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async updateUser(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         const { name, email, password }: userDataUpdate = req.body || {};
@@ -147,6 +174,13 @@ export default class UserController {
         return;
     }
 
+    /**
+     * Deletes the current user's account based on the session token.
+     * Validates the session and removes the user from the database.
+     *
+     * @param {Request} req - The request object containing headers.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async deleteUser(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
 
@@ -189,6 +223,13 @@ export default class UserController {
         return;
     }
 
+    /**
+     * Retrieves the purchases made by the current user based on the session token.
+     * Validates the session and fetches the user's purchase history from the database.
+     *
+     * @param {Request} req - The request object containing headers.
+     * @param {Response} res - The response object to send back containing the user purchases.
+     */
     static async userPurchases(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
 

@@ -1,5 +1,14 @@
 import { carsData } from "../../constants/carTypes";
 
+/**
+ * This function validates the input data for car details.
+ * It checks if all required fields are present and valid.
+ * If any validation fails, it returns an error message.
+ * If all validations pass, it returns null.
+ *
+ * @param {carsData} data - The car data to validate.
+ * @returns {{ error?: string | null }} - An object containing an error message or null if validation passes.
+ */
 export default function validateCarsInputs(data: carsData): { error?: string | null } {
     const { transmission, bodyType, fuelType, year } = data;
     const requiredStrings: [keyof carsData][] = [

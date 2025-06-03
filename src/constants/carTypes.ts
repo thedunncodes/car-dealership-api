@@ -1,3 +1,8 @@
+/**
+*  This file defines TypeScript interfaces for car data structures.
+* It includes interfaces for car data, car update data, query data, and formatted data.
+* These interfaces are used to ensure type safety and consistency across the application.
+*/  
 export interface carsData {
     brand: string;
     model: string;

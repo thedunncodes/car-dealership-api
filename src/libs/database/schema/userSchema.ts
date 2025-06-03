@@ -1,3 +1,12 @@
+/*    This schema is used to validate the user collection in MongoDB.
+    It ensures that each user document contains the required fields:
+    - email: must be a valid email format
+    - role: must be one of 'admin', 'user', or 'staff'
+    - password: must be a SHA256 hash string
+    The schema also enforces that these fields are present and correctly formatted.
+    If a document does not conform to this schema, it will raise an error.
+*/
+
 const userSchema = {
     validator: {
         $jsonSchema: {

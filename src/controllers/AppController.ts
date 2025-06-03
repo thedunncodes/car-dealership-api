@@ -91,7 +91,7 @@ export default class AppController {
      * 
      * 
      * @param {Request} req - The request object containing query parameters.
-     * @param {Response} res - The response object to send back the result.
+     * @param {Response} res - The response object to send back containing query result.
      */
     static async getCars(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
@@ -183,7 +183,7 @@ export default class AppController {
      * If the user is not authenticated or does not have the admin role, it returns an error.
      *
      * @param {Request} req - The request object containing headers and query parameters.
-     * @param {Response} res - The response object to send back the result.
+     * @param {Response} res - The response object to send back containing the dealership sales.
      */
     static async getCarSales(req: Request, res: Response) {
         const xToken = req.headers['x-token'];

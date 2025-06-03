@@ -6,6 +6,7 @@ import dbClient from '../libs/database/db';
 import validateUserInputs from '../utils/inputValidations/validateUserInputs';
 import protectSession from '../utils/authUtils/protectSession';
 
+// Interface for admin input data
 interface adminData {
     name: string;
     email: string;
@@ -13,7 +14,22 @@ interface adminData {
     admin?: boolean; 
 }
 
+/**
+ * AdminController handles administrative operations such as registering admins/staff,
+ * retrieving staff information, and deleting staff members.
+ *
+ * @class AdminController
+ * @static
+ */
 export default class AdminController {
+    /**
+     * Registers a new admin or staff member.
+     * Validates the input data and checks for existing users before creating a new user.
+     * If the admin slug is invalid, it returns an unauthorized error.
+     *
+     * @param {Request} req - The request object containing user data.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async adminReg(req: Request, res: Response) {
         const { name, email, password, admin }: adminData = req.body || {};
         const adminSlug = req.params.adminSlug;
@@ -86,6 +102,13 @@ export default class AdminController {
         return;
     }
 
+    /**
+     * Retrieves a list of all staff members, including admins.
+     * Validates the session token and checks the user's role before returning the staff data.
+     *
+     * @param {Request} req - The request object containing headers.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async getStaff(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         
@@ -126,6 +149,14 @@ export default class AdminController {
         return;
     }
 
+    /**
+     * Deletes a staff member by their ID.
+     * Validates the session token and only the 'admin' is authenticated before deleting the staff member.
+     * If the staff member is not found, it returns a 404 error.
+     *
+     * @param {Request} req - The request object containing headers and parameters.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async deleteStaff(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         const staffId = req.params.staffId;

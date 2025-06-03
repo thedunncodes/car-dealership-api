@@ -9,7 +9,22 @@ import validateCarUpdate from "../utils/inputValidations/validateCarUpdate";
 import checkCarExists from "../utils/dbUtils/checkCarExists";
 import updateCarData from "../utils/dbUtils/updateCarData";
 
+/**
+ * CarsController handles operations related to car management such as creating, updating,
+ * deleting, and buying cars. It ensures that only authorized users can perform these actions.
+ *
+ * @class CarsController
+ * @static
+ */
 export default class CarsController {
+    /**
+     * Creates a new car entry in the database.
+     * Validates the input data and checks for user authorization before adding the car.
+     * Only users with the 'admin' or 'staff' role can create cars.
+     *
+     * @param {Request} req - The request object containing car data.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async createCar(req: Request, res: Response) {
         const {
             brand, model, bodyType, transmission, price,
@@ -71,6 +86,14 @@ export default class CarsController {
         return;
     }
 
+    /**
+     * Updates an existing car entry in the database.
+     * Validates the input data and checks for user authorization before updating the car.
+     * Only users with the 'admin' or 'staff' role can update cars.
+     *
+     * @param {Request} req - The request object containing car data and car ID.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async updateCar(req: Request, res: Response) {
         const {
             brand, model, bodyType, transmission, price,
@@ -137,6 +160,14 @@ export default class CarsController {
         return;
     }
 
+    /**
+     * Deletes a car entry from the database.
+     * Validates the session token and checks for user authorization before deleting the car.
+     * Only users with the 'admin' or 'staff' role can delete cars.
+     *
+     * @param {Request} req - The request object containing car ID.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async deleteCar(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         const carId = req.params.carId;
@@ -183,6 +214,14 @@ export default class CarsController {
         return;
     }
 
+    /**
+     * Buys a car by updating its status to sold and recording the sale in the database.
+     * Validates the session token and checks for user authorization before processing the purchase.
+     * The buyer must provide the amount paid, which should be equal to the car's price.
+     *
+     * @param {Request} req - The request object containing car ID and amount paid.
+     * @param {Response} res - The response object to send back the result.
+     */
     static async buyCar(req: Request, res: Response) {
         const xToken = req.headers['x-token'];
         const carId = req.params.carId;

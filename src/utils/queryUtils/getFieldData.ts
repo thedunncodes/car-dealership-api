@@ -5,6 +5,14 @@ import {
     fuelTypeQuery, yearQuery, priceQuery, mileageQuery
 } from "../dbUtils/carQueries";
 
+/**
+ * This function retrieves car data based on the provided valid fields and query fields.
+ * It queries the database for each field and returns an array of documents that match the criteria.
+ *
+ * @param {keyof carQueryData[]} validFields - The fields that are valid for querying.
+ * @param {carQueryData} queryFields - The fields to query by.
+ * @returns {Promise<WithId<Document>[]>} - A promise that resolves to an array of car documents.
+ */
 export default async function getFieldData (
     validFields: (keyof carQueryData)[], queryFields: carQueryData): Promise<WithId<Document>[]> {
     const queryData: WithId<Document>[] = [];

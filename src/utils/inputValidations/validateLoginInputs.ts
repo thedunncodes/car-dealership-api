@@ -1,3 +1,9 @@
+/**
+ * Validates the inputs for a login form.
+ * @param {string} email - The email address to validate.
+ * @param {string} password - The password to validate.
+ * @returns {Object} An object containing an error message if validation fails, or an empty object if validation passes.
+ */
 export default function validateLoginInputs(email:string, password:string): { error?: string } {
     if (typeof email !== 'string' || typeof password !== 'string') {
         return { error: "Invalid input types: email, and password must be strings." };
