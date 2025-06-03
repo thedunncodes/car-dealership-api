@@ -103,7 +103,7 @@ export default class AdminController {
     }
 
     /**
-     * Retrieves a list of all staff members, including admins.
+     * Retrieves a list of all staff members, including the admin.
      * Validates the session token and checks the user's role before returning the staff data.
      *
      * @param {Request} req - The request object containing headers.

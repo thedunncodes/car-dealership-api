@@ -26,7 +26,7 @@
  * - Car Inventory & Sales:
  *   - GET    /cars                     → AppController.getCars
  *   - POST   /inventory/cars/create    → CarsController.createCar
- *   - POST   /inventory/cars/buy/:carId→ CarsController.buyCar
+ *   - POST   /inventory/cars/buy/:carId → CarsController.buyCar
  *   - GET    /inventory/cars/sales     → AppController.getCarSales
  *   - PUT    /inventory/cars/update/:carId → CarsController.updateCar
  *   - DELETE /inventory/cars/delete/:carId → CarsController.deleteCar
