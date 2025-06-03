@@ -35,4 +35,6 @@ router.post("/inventory/cars/create", CarsController.createCar);
 
 router.put("/inventory/cars/update/:carId", CarsController.updateCar);
 
+router.delete("/inventory/cars/delete/:carId", CarsController.deleteCar);   
+
 export default router;
