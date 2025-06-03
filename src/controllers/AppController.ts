@@ -95,4 +95,49 @@ export default class AppController {
         res.status(200).json(formattedData);
         return;
     }
+
+    static async getCarSales(req: Request, res: Response) {
+        const xToken = req.headers['x-token'];
+        const { page, size } = req.query;
+        const pageNumber = parseInt(page as string, 10);
+        const pageSize = parseInt(size as string, 10);
+                
+        if (!xToken) {
+            res.status(401).json({ error: "Unauthorized, no access token provided, procced to '/login' route " });
+            return;
+        }
+        const { validSession, payload } = protectSession(xToken as string);
+        if (validSession) {
+            if (payload.role === "user") {
+                res.status(403).json({ error: "Forbidden, access denied." });
+                return;
+            }
+        } else {
+            res.status(401).json({ error: "Invalid session token, or expired session" });
+            return;
+        }
+
+        if (dbClient.isAlive()) {
+            const salesColl = dbClient.db?.collection("sales");
+            const data = await salesColl?.find({}).toArray() || [];
+
+            if (page && size) {
+                const paginatedData = paginate(data, pageNumber, pageSize);
+                res.status(200).json({
+                    totalSales: data.length,
+                    sales: paginatedData
+                });
+                return;
+            }
+
+            res.status(200).json({
+                totalSales: data.length,
+                sales: data
+            });
+            return;
+        }
+
+        res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
+        return;
+    }
 }
