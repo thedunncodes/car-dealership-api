@@ -35,3 +35,17 @@ export interface carQueryData {
     mileage?: number;
     year?: number;
 }
+
+export interface formattedDataProps {
+    id: string;
+    brand: string;
+    model: string;
+    bodyType: string;
+    transmission: string;
+    price: number;
+    horsePower: number;
+    fuelType: string;
+    mileage: number;
+    year: number;
+    imgUrl: string;
+}
