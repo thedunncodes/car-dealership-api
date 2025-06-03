@@ -1,9 +1,9 @@
 import { WithId, Document } from "mongodb";
-import { carQueryData } from "../../constants/carTypes";
+import { carQueryData, formattedDataProps } from "../../constants/carTypes";
 
 export default function filterQueryData (
     queryData: WithId<Document>[], validFields: (keyof carQueryData)[],
-    queryFields: carQueryData)  {
+    queryFields: carQueryData): { filteredData: WithId<Document>[], formattedData: formattedDataProps[] } {
     const filteredData: WithId<Document>[] = [];
 
     for (const car of queryData) {
@@ -21,7 +21,6 @@ export default function filterQueryData (
                 isValid.bodyType = (String(car[key]).toLocaleLowerCase().includes(queryFields.bodyType.toLocaleLowerCase()));
             }
             if (key === "transmission" && queryFields.transmission) {
-                console.log("ran")
                 isValid.transmission = (car[key] === queryFields.transmission);
             }
             if (key === "fuelType" && queryFields.fuelType) {
@@ -45,7 +44,7 @@ export default function filterQueryData (
         }
     }
 
-    const formattedData = filteredData.map((car) => ({
+    const formattedData: formattedDataProps[] = filteredData.map((car) => ({
             id: car._id.toString(),
             brand: car.brand,
             model: car.model,
