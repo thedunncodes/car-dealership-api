@@ -33,7 +33,9 @@ router.get("/cars", AppController.getCars);
 
 router.post("/inventory/cars/create", CarsController.createCar);
 
-router.post("/inventrory/cars/buy/:carId", CarsController.buyCar);
+router.post("/inventory/cars/buy/:carId", CarsController.buyCar);
+
+router.get("/inventory/cars/sales", AppController.getCarSales);
 
 router.put("/inventory/cars/update/:carId", CarsController.updateCar);
 
