@@ -7,7 +7,6 @@ export default async function checkUserExists(
   ): Promise<jwtPayloadProp | null> {
 
     const user = await dbClient.db?.collection("users").findOne({ email, password: sha256(String(password)) });
-    console.log(user)
     if (user) {
         return {
             id: user._id.toString(),
