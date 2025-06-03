@@ -33,9 +33,9 @@ This is a simple Node.js/Express RESTful API for managing a car dealership, supp
    - `ADMIN_SLUG`: Generate randomly using `UUID4` or any other secure, non-readable slug generator.
    - `JWT_SECRET_KEY`: Generate randomly using `UUID4` or any other secure key generator.
    - `NODE_ENV`: Set to `dev` for local development or `production` for production build.
+   - `DB_NAME`: MongoDB database name (default: `no-database-specified`)
 
    **If you run your own MongoDB server (e.g., on a virtual machine like Linode):**
-   - `DB_NAME`: MongoDB database name (default: `no-database-specified`)
    - `DB_HOST`: MongoDB database host (default: `localhost`)
    - `DB_PORT`: MongoDB database port (default: `27017`)
 
