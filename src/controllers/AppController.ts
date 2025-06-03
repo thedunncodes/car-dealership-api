@@ -32,11 +32,33 @@ export default class AppController {
             transmission, price, mileage, year, 
          }: carQueryData = req.query;
         const { page, size } = req.query;
+        const pageNumber = parseInt(page as string, 10);
+        const pageSize = parseInt(size as string, 10);
+
+        if (!dbClient.isAlive()) {
+            res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
+            return;
+        }
 
         const validFields = selectedFields({
             brand, model, bodyType, fuelType,
             transmission, price, mileage, year
-        }) 
+        })
+
+        if (validFields.length === 0) {
+            const carsColl = dbClient.db?.collection("cars");
+            const cars = await carsColl?.find({ sold: false }).toArray() || [];
+
+            if (page && size) {
+            const paginatedData = paginate(cars, pageNumber, pageSize);
+            res.status(200).json(paginatedData);
+            return;
+        }
+
+            // no pagination
+            res.status(200).json(cars);
+            return;
+        }
 
         const queryData = await getFieldData(
             validFields, {
@@ -54,9 +76,6 @@ export default class AppController {
             const { payload } = protectSession(xToken as string);
             if (payload.role !== "user") {
                 if (page && size) {
-                    const pageNumber = parseInt(page as string, 10);
-                    const pageSize = parseInt(size as string, 10);
-
                     const paginatedData = paginate(filteredData, pageNumber, pageSize);
                     res.status(200).json(paginatedData);
                     return;
@@ -68,9 +87,6 @@ export default class AppController {
         }
 
         if (page && size) {
-            const pageNumber = parseInt(page as string, 10);
-            const pageSize = parseInt(size as string, 10);
-
             const paginatedData = paginate(formattedData, pageNumber, pageSize);
             res.status(200).json(paginatedData);
             return;
