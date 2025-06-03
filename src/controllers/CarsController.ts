@@ -136,4 +136,50 @@ export default class CarsController {
         res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
         return;
     }
+
+    static async deleteCar(req: Request, res: Response) {
+        const xToken = req.headers['x-token'];
+        const carId = req.params.carId;
+                
+        if (!xToken) {
+            res.status(401).json({ error: "Unauthorized, no access token provided, procced to '/login' route " });
+            return;
+        }
+        const { validSession, payload } = protectSession(xToken as string);
+        if (validSession) {
+            if (payload.role === "user") {
+                res.status(403).json({ error: "Forbidden, access denied." });
+                return;
+            }
+        } else {
+            res.status(401).json({ error: "Invalid session token, or expired session" });
+            return;
+        }
+
+        if (!carId) {
+            res.status(400).json({ error: "Car ID is required" });
+            return;
+            }
+
+        if (dbClient.isAlive()) {
+            const carsColl = dbClient.db?.collection("cars");
+            try {
+                const result = await carsColl?.deleteOne({ _id: new ObjectId(carId) });
+        
+                if (!result || result.deletedCount === 0) {
+                    res.status(404).json({ error: "Car not found" });
+                    return;
+                }
+            } catch {
+                res.status(400).json({ error: "Invalid Car Id" });
+                return;
+            }
+        
+            res.status(200).json({ message: `Car with id '${carId}' deleted successfully` });
+            return;
+        }
+
+        res.status(500).json({ error: "Internal server error, visit '/stat' endpoint." });
+        return;
+    }
 }
