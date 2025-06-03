@@ -5,7 +5,7 @@ import { sha256 } from "js-sha256";
 
 export default async function updateUserData(
     userId: string, newData: userDataUpdate
-  ): Promise<{ updated: boolean; error: string | null, passChanged?: boolean }> {
+  ): Promise<{ updated: boolean; changes?: boolean; error?: string; passChanged?: boolean }> {
 
     const userColl = dbClient.db?.collection("users");
     const oldData = await userColl?.findOne({ _id: new ObjectId(userId) });
@@ -35,12 +35,12 @@ export default async function updateUserData(
 
     if (updateResult?.modifiedCount !== 0) {
         if (newData.password && (sha256(String(newData.password)) !== oldData?.password)) {
-            return { updated: true, error: null, passChanged: true };
+            return { updated: true, changes: true, passChanged: true };
         }
-        return { updated: true, error: null };
+        return { updated: true, changes: true };
     }
     if ((updateResult?.modifiedCount === 0 &&  updateResult?.matchedCount === 1)) {
-        return { updated: false, error: "No changes made" };
+        return { updated: true, changes: false };
     }
 
     return { updated: false, error: "User not found" };

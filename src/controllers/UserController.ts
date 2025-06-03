@@ -130,6 +130,11 @@ export default class UserController {
                         return;
                     }
                 }
+                if (!result.changes) {
+                    res.status(200).json({ message: "No changes made" });
+                    return; 
+                }
+
                 res.status(200).json({ message });
                 return;
             } else {
