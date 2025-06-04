@@ -22,7 +22,6 @@
   "homepage": "https://github.com/thedunncodes/car-dealership-api#readme",
   "devDependencies": {
     "@eslint/js": "^9.28.0",
-    "@openui5/ts-types-esm": "^1.136.0",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
