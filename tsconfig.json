@@ -10,7 +10,12 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": [
+          "./node_modules/@types"
+      ],
+          "types": [
+          "@openui5/ts-types-esm"
+      ],
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],
