@@ -97,6 +97,7 @@ The server will run on the configured port (default: 5000).
 - `src/routes/`: Defines the API endpoints and associates them with their respective controllers.
 - `src/utils/`: Utility functions for app operations.
 - `src/constants/`: contains types/interfaces for API endpoints.
+- `__tests_`: contains all unit test files for the application.
 - `server.ts`: Entry point for the application.
 
 ## Request Examples
