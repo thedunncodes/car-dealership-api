@@ -140,7 +140,7 @@ export default class AdminController {
             res.status(200).json({
                 totalStaff: staff.length,
                 admin: staff.filter(user => user.role === 'admin'),
-                staff: staff.filter(user => user.role === 'staff'),
+                staff: staff.filter(user => user.role === 'staff').reverse(),
             });
             return;
         }

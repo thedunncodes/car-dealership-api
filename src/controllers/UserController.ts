@@ -260,7 +260,7 @@ export default class UserController {
 
             res.status(200).json({
                 totalPurchases: data.length,
-                purchases: purchases
+                purchases: purchases.slice().reverse()
             });
             return;
         }

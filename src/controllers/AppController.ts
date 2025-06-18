@@ -216,7 +216,7 @@ export default class AppController {
             const data = await salesColl?.find({}).toArray() || [];
 
             if (page && size) {
-                const paginatedData = paginate(data, pageNumber, pageSize);
+                const paginatedData = paginate(data.slice().reverse(), pageNumber, pageSize);
                 res.status(200).json({
                     totalSales: data.length,
                     sales: paginatedData
@@ -226,7 +226,7 @@ export default class AppController {
 
             res.status(200).json({
                 totalSales: data.length,
-                sales: data
+                sales: data.slice().reverse()
             });
             return;
         }
