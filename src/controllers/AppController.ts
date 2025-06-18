@@ -129,12 +129,17 @@ export default class AppController {
                 mileage: car.mileage,
                 year: car.year,
                 imgUrl: car.imgUrl,
-            }));
+            })).reverse();
+            let secure;
+            if (xToken) {
+                const { payload } = protectSession(xToken as string);
+                if (payload.role !== "user") secure = true
+            }
             if (page && size) {
-            const paginatedData = paginate(formattedData, pageNumber, pageSize);
-            res.status(200).json(paginatedData);
-            return;
-        }
+                const paginatedData = paginate(secure? cars.slice().reverse() : formattedData, pageNumber, pageSize);
+                res.status(200).json(paginatedData);
+                return;
+            }
 
             // no pagination
             res.status(200).json(formattedData);
@@ -157,23 +162,23 @@ export default class AppController {
             const { payload } = protectSession(xToken as string);
             if (payload.role !== "user") {
                 if (page && size) {
-                    const paginatedData = paginate(filteredData, pageNumber, pageSize);
+                    const paginatedData = paginate(filteredData.slice().reverse(), pageNumber, pageSize);
                     res.status(200).json(paginatedData);
                     return;
                 }
                 // no pagination
-                res.status(200).json(filteredData);
+                res.status(200).json(filteredData.slice().reverse());
                 return;
             }
         }
 
         if (page && size) {
-            const paginatedData = paginate(formattedData, pageNumber, pageSize);
+            const paginatedData = paginate(formattedData.slice().reverse(), pageNumber, pageSize);
             res.status(200).json(paginatedData);
             return;
         }
         // no pagination
-        res.status(200).json(formattedData);
+        res.status(200).json(formattedData.slice().reverse());
         return;
     }
 
