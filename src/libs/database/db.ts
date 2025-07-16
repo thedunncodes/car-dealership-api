@@ -64,6 +64,10 @@ class DBClient {
     isAlive() {
         return this.connected && this.db !== null;
     }
+
+    async close() {
+        await this.mongoClient.close()
+    }
 }
 
 const dbClient = new DBClient();
