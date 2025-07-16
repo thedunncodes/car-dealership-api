@@ -16,6 +16,10 @@ app.use(routes)
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Dealership server running...`);
-})
+if (require.main === module) { // Prevent app from listening during imports i.e during tests
+    app.listen(PORT, () => {
+        console.log(`Dealership server running...`);
+    })
+}
+
+export default app;
