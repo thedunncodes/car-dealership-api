@@ -43,17 +43,18 @@ export default class UserController {
         }
 
         if (dbClient.isAlive()) {
+            const existingUser = await dbClient.db?.collection("users").findOne({ email: email });
+            if (existingUser) {
+                res.status(400).json({ error: `User with email '${email}' already exists` });
+                return;
+            }
+
             const existingPassword = await dbClient.db?.collection("users").findOne({ password: sha256(String(password)) });
             if (existingPassword) {
                 res.status(400).json({ error: "Choose a stronger password" });
                 return;
             }
 
-            const existingUser = await dbClient.db?.collection("users").findOne({ email: email });
-            if (existingUser) {
-                res.status(400).json({ error: `User with email '${email}' already exists` });
-                return;
-            }
 
             try {
                 await dbClient.db?.collection("users").insertOne({
