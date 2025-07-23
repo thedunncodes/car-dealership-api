@@ -13,6 +13,7 @@ dotenv.config();
 
 // If the environment variables are not set, it will use 'localhost' and '27017' for host and port as defaults.
 const DEFAULT_DB_NAME = 'no-database-specified';
+const DEV_ENV: boolean = process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test';
 
 class DBClient {
     db: Db | null = null;
@@ -22,7 +23,7 @@ class DBClient {
     constructor() {
         const host = process.env.DB_HOST || 'localhost';
         const port = process.env.DB_PORT || 27017;
-        const database = process.env.DB_NAME || DEFAULT_DB_NAME;
+        const database = DEV_ENV ? 'test-db' : (process.env.DB_NAME || DEFAULT_DB_NAME);
         const url =  process.env.DB_CONNECTION_MODE === 'URI'
                 ?  process.env.MONGO_URI
                 : `mongodb://${host}:${port}`;
