@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../../src/server";
 import dbClient from "../../src/libs/database/db";
-import { formattedDataProps } from "../../src/constants/carTypes";
 
 
 describe("App Controller Tests", () => {
@@ -17,7 +16,6 @@ describe("App Controller Tests", () => {
     describe("GET /", () => {
         it("Should return 200 OK on 'GET /'", async () => {
             const res = await request(app).get('/')
-            console.log(res.body)
             expect(res.status).toEqual(200)
         } )
     });
