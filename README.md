@@ -126,10 +126,11 @@ Header:
 - Admin-only routes require the user to have an admin role.
 - Car fields include: `brand`, `model`, `bodyType`, `transmission`, `fuelType`, `price`, `horsePower`, `mileage`, `year`, `imgUrl`.
 - For full request/response details, see the controller and route files.
-- To register as a staff on my live API, this slug is available `e01431fd-8f05-49c7-8d0f-aa844b798e1a`. for a  certain period of time. 
+- To register as a staff on my live API, this slug is available `e01431fd-8f05-49c7-8d0f-aa844b798e1a`. for a  certain period of time.
+- ROUTE `/inventory/cars/buy/:carId` DO NOT CONTAIN CODES THAT COULD PROCESS ACTUAL TRANSACTIONS, THIS JUST MOCKS PAYMENT FUNCTION.
 
 ## License
-This repository is for an assesment test and educational purposes only. Unauthorized use, Distribution, or modification of this code is strictly prohibited.
+This repository is for educational purposes only. Unauthorized use, Distribution, or modification of this code is strictly prohibited.
 
 ---
 
