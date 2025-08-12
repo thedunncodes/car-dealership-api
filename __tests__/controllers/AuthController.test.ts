@@ -40,7 +40,6 @@ describe("Auth Controller Tests", () => {
             const res = await request(app).post('/register').send(mockData[5]);
             if (res.body.error) {
                 expect(res.body.error).toEqual(`User with email '${mockData[5].email}' already exists`);
-                console.log(res.body.error);
                 return;
             }
             expect(res.status).toEqual(201);
@@ -50,6 +49,30 @@ describe("Auth Controller Tests", () => {
             const res = await request(app).post('/login').send(mockData[5]);
             expect(res.status).toEqual(200);
             expect(res.body.token).toBeDefined();
+        });
+    })
+
+    describe("POST /logout", () => {
+        it("Should return 201 Created on 'POST /register' with valid data", async () => {
+            const res = await request(app).post('/register').send(mockData[5]);
+            if (res.body.error) {
+                expect(res.body.error).toEqual(`User with email '${mockData[5].email}' already exists`);
+                return;
+            }
+            expect(res.status).toEqual(201);
+        });
+
+        it("Should return 401 Unauthorized on 'POST /logout' with no token", async () => {
+            const res = await request(app).get('/logout');
+            expect(res.status).toEqual(401);
+        });
+
+        it("Should return 200 OK on 'POST /logout' with valid token", async () => {
+            const loginRes = await request(app).post('/login').send(mockData[5]);
+            const token = loginRes.body.token;
+            const res = await request(app).get('/logout').set('x-token', token);
+            expect(res.status).toEqual(200);
+            expect(res.body.message).toEqual("Logged out successfully");
         });
     })
 })
