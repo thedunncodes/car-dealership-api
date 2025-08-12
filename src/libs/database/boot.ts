@@ -10,10 +10,11 @@ import data from "./cars_inventory.json";
  *
  * @param {Db} db - The MongoDB database instance.
  */
-const DEV_ENV: boolean = process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test';
-const DB_NAME: string = DEV_ENV ? 'test-db' : (process.env.DB_NAME || 'no-database-specified');
 
 export default async function boot(db: Db) {
+    const DEV_ENV: boolean = process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test';
+    const DB_NAME: string = DEV_ENV ? 'test-db' : (process.env.DB_NAME || 'no-database-specified'); ;
+
     const dbExists = (await db.admin().listDatabases()).databases.some(database => database.name === DB_NAME)
     const usersColl = db.collection("users");
     const userCollExists = (await db.collections()).some(c => c.collectionName === "users");
