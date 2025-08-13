@@ -24,12 +24,22 @@ const mockData = [
         email: "unregistered@email.com",
         password: "1234567"
     },
-
     {
         name: "Valid User",
         email: "registered@email.com",
         password: "1234567"
     },
+    {
+        name: "Admin User",
+        email: "admin@email.com",
+        password: "admin12345",
+        admin: true
+    },
+    {
+        name: "Staff User",
+        email: "staff@email.com",
+        password: "staff12345",
+    }
 ]
 
 export default mockData;
