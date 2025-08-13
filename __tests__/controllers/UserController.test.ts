@@ -97,7 +97,6 @@ describe("User Controller Tests", () => {
                 const res = await request(app).put('/user/update').set('x-token', token).send({
                     name: "User Updated"
                 })
-                console.log(res.body);
                 expect(res.status).toEqual(200);
                 expect(["User data updated successfully, Kindly login again to continue.",
                     "User data updated successfully", "No changes made"
