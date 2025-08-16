@@ -5,6 +5,10 @@ import dbClient from "../../src/libs/database/db";
 import mockData from "../../src/constants/tests/testData";
 
 describe("Admin Controller Tests", () => {    
+    beforeAll(async () => {
+        await dbClient.initiateConnection();
+    });
+    
     afterAll(async () => {
         if (dbClient.isAlive()) {
             await dbClient.close();
@@ -70,10 +74,10 @@ describe("Admin Controller Tests", () => {
         let userToken: string = 'no-token';
         
         it("Should return 200 OK and a token on 'POST /login' with valid data", async () => {
-            const adminRes = await request(app).post('/register').send(mockData[6]);
+            const adminRes = await request(app).post(`/admin/register/${process.env.ADMIN_SLUG}`).send(mockData[6]);
             const userRes = await request(app).post('/register').send(mockData[5]);
             if (adminRes.body.error) {
-                expect(adminRes.body.error).toEqual(`User with email '${mockData[6].email}' already exists`);
+                expect(adminRes.body.error).toEqual(`Unauthorized, Admin User already exists`);
             } else {
                 expect(adminRes.status).toEqual(201);
             }

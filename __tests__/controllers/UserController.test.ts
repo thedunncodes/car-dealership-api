@@ -4,7 +4,10 @@ import dbClient from "../../src/libs/database/db";
 import mockData from "../../src/constants/tests/testData";
 
 describe("User Controller Tests", () => {
-    
+    beforeAll(async () => {
+        await dbClient.initiateConnection();
+    });
+
     afterAll(async () => {
         if (dbClient.isAlive()) {
             await dbClient.close();

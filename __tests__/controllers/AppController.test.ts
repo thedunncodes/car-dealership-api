@@ -4,6 +4,10 @@ import dbClient from "../../src/libs/database/db";
 
 
 describe("App Controller Tests", () => {
+    beforeAll(async () => {
+        await dbClient.initiateConnection();
+    });
+    
     afterAll(async () => {
         if (dbClient.isAlive()) {
             await dbClient.close();
