@@ -19,8 +19,8 @@ class DBClient {
     db: Db | null = null;
     connected: boolean = false;
     private mongoClient: MongoClient = new MongoClient('mongodb://localhost:27017');
-
-    constructor() {
+    
+    async initiateConnection() {
         const host = process.env.DB_HOST || 'localhost';
         const port = process.env.DB_PORT || 27017;
         const database = DEV_ENV ? 'test-db' : (process.env.DB_NAME || DEFAULT_DB_NAME);
@@ -37,10 +37,10 @@ class DBClient {
                             deprecationErrors: true
                         }
                     })
-                    this.connect(database);
+                    await this.connect(database);
                 } else{
                     this.mongoClient = new MongoClient(url);
-                    this.connect(database);
+                    await this.connect(database);
                 }
             }
         } catch (err) {
