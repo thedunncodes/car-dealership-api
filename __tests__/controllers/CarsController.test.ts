@@ -23,7 +23,7 @@ describe("Cars Controller Tests", () => {
     let carId: string = '';
 
 
-    it("Should return 200 OK and 2 tokens on 'POST /login' with valid data for admin and normal user", async () => {
+    it("Should return 200 OK and 2 tokens on 'POST /login' with valid data for an admin and a normal user", async () => {
         const adminRes = await request(app).post(`/admin/register/${process.env.ADMIN_SLUG}`).send(mockData[6]);
         const userRes = await request(app).post('/register').send(mockData[5]);
         if (adminRes.body.error) {
@@ -195,85 +195,85 @@ describe("Cars Controller Tests", () => {
         const amountPaid: number = 30 
 
         it("Should return 401 Unauthorized on 'POST /inventory/cars/buy/:carId' with no token", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`);
-                expect(res.status).toEqual(401);
-            });
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`);
+            expect(res.status).toEqual(401);
+        });
 
-            it("Should return 401 Unauthorized on 'POST /inventory/cars/buy/:carId' with invalid token", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`).set('x-token', `invalid-token`);
-                expect(res.status).toEqual(401);
-            })
+        it("Should return 401 Unauthorized on 'POST /inventory/cars/buy/:carId' with invalid token", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`).set('x-token', `invalid-token`);
+            expect(res.status).toEqual(401);
+        });
 
-            it("Should return 404 Not Found on 'POST /inventory/cars/buy/:carId' with incorrect car Id", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${new ObjectId()}`).set('x-token', adminToken);
-                expect(res.status).toEqual(404);
-                expect(res.body.error).toEqual("Car not found/Invalid car id ");
-            });
+        it("Should return 404 Not Found on 'POST /inventory/cars/buy/:carId' with incorrect car Id", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${new ObjectId()}`).set('x-token', adminToken);
+            expect(res.status).toEqual(404);
+            expect(res.body.error).toEqual("Car not found/Invalid car id ");
+        });
 
-            it("Should return 404 Not Found on 'POST /inventory/cars/buy/:carId' with invalid car Id", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/60d5-invalid-id`).set('x-token', adminToken);
-                expect(res.status).toEqual(404);
-                expect(res.body.error).toEqual("Car not found/Invalid car id ");
-            });
+        it("Should return 404 Not Found on 'POST /inventory/cars/buy/:carId' with invalid car Id", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/60d5-invalid-id`).set('x-token', adminToken);
+            expect(res.status).toEqual(404);
+            expect(res.body.error).toEqual("Car not found/Invalid car id ");
+        });
 
-            it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with no amount paid", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`).set('x-token', adminToken);
-                expect(res.status).toEqual(400);
-                expect(res.body.error).toEqual("Invalid amount provided, it should be a positive number");
-            });
+        it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with no amount paid", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`).set('x-token', adminToken);
+            expect(res.status).toEqual(400);
+            expect(res.body.error).toEqual("Invalid amount provided, it should be a positive number");
+        });
 
-            it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with Insufficient amount paid", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid }).set('x-token', adminToken);
-                expect(res.status).toEqual(400);
-                expect(res.body.error).toEqual(`Insufficient amount, the car price is $${carData.price}, but you provided $${amountPaid}`);
-            });
+        it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with Insufficient amount paid", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid }).set('x-token', adminToken);
+            expect(res.status).toEqual(400);
+            expect(res.body.error).toEqual(`Insufficient amount, the car price is $${carData.price}, but you provided $${amountPaid}`);
+        });
 
-            it("Should return 200 OK on 'POST /inventory/cars/buy/:carId' with valid carId and amount paid", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid: carData.price }).set('x-token', adminToken);
-                expect(res.status).toEqual(200);
-                expect(res.body.message).toContain("Purchase successful with purchase id")
-            });
+        it("Should return 200 OK on 'POST /inventory/cars/buy/:carId' with valid carId and amount paid", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid: carData.price }).set('x-token', adminToken);
+            expect(res.status).toEqual(200);
+            expect(res.body.message).toContain("Purchase successful with purchase id")
+        });
 
-            it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with valid carId and amount paid, indicating the car is sold", async () => {
-                const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid: carData.price }).set('x-token', adminToken);
-                expect(res.status).toEqual(400);
-                expect(res.body.error).toEqual(`Car with id '${carId}' already sold`)
-            });
+        it("Should return 400 Bad Request on 'POST /inventory/cars/buy/:carId' with valid carId and amount paid, indicating the car is sold", async () => {
+            const res = await request(app).post(`/inventory/cars/buy/${carId}`).send({ amountPaid: carData.price }).set('x-token', adminToken);
+            expect(res.status).toEqual(400);
+            expect(res.body.error).toEqual(`Car with id '${carId}' already sold`)
+        });
     });
 
     describe("DELETE /inventory/cars/delete/:carId", () => {
         it("Should return 401 Unauthorized on 'DELETE /inventory/cars/delete/:carId' with no token", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/${carId}`);
-                expect(res.status).toEqual(401);
-            });
+            const res = await request(app).delete(`/inventory/cars/delete/${carId}`);
+            expect(res.status).toEqual(401);
+        });
 
-            it("Should return 401 Unauthorized on 'DELETE /inventory/cars/delete/:carId' with invalid token", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', `invalid-token`);
-                expect(res.status).toEqual(401);
-            })
+        it("Should return 401 Unauthorized on 'DELETE /inventory/cars/delete/:carId' with invalid token", async () => {
+            const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', `invalid-token`);
+            expect(res.status).toEqual(401);
+        });
 
-            it("Should return 404 Not Found on 'DELETE /inventory/cars/delete/:carId' with incorrect car Id", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/${new ObjectId()}`).set('x-token', adminToken);
-                expect(res.status).toEqual(404);
-                expect(res.body.error).toEqual("Car not found");
-            });
-            
-            it("Should return 400 Bad Request on 'DELETE /inventory/cars/delete/:carId' with invalid car Id", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/60d5-invalid-id`).set('x-token', adminToken);
-                expect(res.status).toEqual(400);
-                expect(res.body.error).toEqual("Invalid Car Id");
-            });
-            
-            it("Should return 403 forbidden on 'DELETE /inventory/cars/delete/:carId' with a valid user token", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', userToken);
-                expect(res.status).toEqual(403);
-                expect(res.body.error).toEqual("Forbidden, access denied.");
-            });
+        it("Should return 404 Not Found on 'DELETE /inventory/cars/delete/:carId' with incorrect car Id", async () => {
+            const res = await request(app).delete(`/inventory/cars/delete/${new ObjectId()}`).set('x-token', adminToken);
+            expect(res.status).toEqual(404);
+            expect(res.body.error).toEqual("Car not found");
+        });
+        
+        it("Should return 400 Bad Request on 'DELETE /inventory/cars/delete/:carId' with invalid car Id", async () => {
+            const res = await request(app).delete(`/inventory/cars/delete/60d5-invalid-id`).set('x-token', adminToken);
+            expect(res.status).toEqual(400);
+            expect(res.body.error).toEqual("Invalid Car Id");
+        });
+        
+        it("Should return 403 forbidden on 'DELETE /inventory/cars/delete/:carId' with a valid user token", async () => {
+            const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', userToken);
+            expect(res.status).toEqual(403);
+            expect(res.body.error).toEqual("Forbidden, access denied.");
+        });
 
-            it("Should return 200 OK on 'DELETE /inventory/cars/delete/:carId' with valid admin user token and carId", async () => {
-                const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', adminToken);
-                expect(res.status).toEqual(200);
-                expect(res.body.message).toEqual(`Car with id '${carId}' deleted successfully`);
-            });
+        it("Should return 200 OK on 'DELETE /inventory/cars/delete/:carId' with valid admin user token and carId", async () => {
+            const res = await request(app).delete(`/inventory/cars/delete/${carId}`).set('x-token', adminToken);
+            expect(res.status).toEqual(200);
+            expect(res.body.message).toEqual(`Car with id '${carId}' deleted successfully`);
+        });
     });
 });

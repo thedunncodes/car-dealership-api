@@ -73,7 +73,7 @@ describe("Admin Controller Tests", () => {
         let adminToken: string = 'no-token';
         let userToken: string = 'no-token';
         
-        it("Should return 200 OK and a token on 'POST /login' with valid data", async () => {
+        it("Should return 200 OK and 2 tokens on 'POST /login' with valid data for an admin and a normal user", async () => {
             const adminRes = await request(app).post(`/admin/register/${process.env.ADMIN_SLUG}`).send(mockData[6]);
             const userRes = await request(app).post('/register').send(mockData[5]);
             if (adminRes.body.error) {
@@ -113,7 +113,7 @@ describe("Admin Controller Tests", () => {
                 const res = await request(app).get('/admin/staff').set('x-token', userToken);
                 expect(res.status).toEqual(403);
                 expect(res.body.error).toEqual("Forbidden, access denied.");
-            })
+            });
             
             it("Should return all staff information on 'GET /admin/staff' with valid admin user token", async () => {
                 const res = await request(app).get('/admin/staff').set('x-token', adminToken);
@@ -180,7 +180,7 @@ describe("Admin Controller Tests", () => {
                 const res = await request(app).delete(`/admin/delete/${staffId}`).set('x-token', userToken);
                 expect(res.status).toEqual(403);
                 expect(res.body.error).toEqual("Forbidden, access denied.");
-            })
+            });
 
             it("Should return 200 OK on 'DELETE /admin/delete/:staffId' with valid admin user token and staffId", async () => {
                 const res = await request(app).delete(`/admin/delete/${staffId}`).set('x-token', adminToken);
