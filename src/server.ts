@@ -24,8 +24,9 @@ if (require.main === module) { // Prevent app from listening during imports i.e 
             console.error("Failed to connect to the database. Exiting...");
             process.exit(1);
         }
+        const ENV = process.env.NODE_ENV === 'dev' ? "development" : process.env.NODE_ENV;
         app.listen(PORT, () => {
-            console.log(`Dealership server running...`);
+            console.log(`Dealership server running...\nEnvironment: ${ENV}`);
         })
     })();
     
