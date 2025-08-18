@@ -23,9 +23,27 @@ This is a simple Node.js/Express RESTful API for managing a car dealership, supp
    cd car-dealership
    ```
 3. **Install dependencies:**
+   In the `package.json` file, ensure the version of `@types/node` in devDependecies and `node` in engines match your node version. You can run `node -v` to get your current node version to update the `package.json` file.
+   ```bash
+   {
+      "devDependencies": {
+         ...,
+         "@types/node": "^20.17.0",
+         ...
+      },
+      ...,
+      "engines": {
+         "node": "20.17.0"
+      }
+   }
+   ```
+
+   After updating the `package.json` file, run the command below: 
    ```bash
    npm install
    ```
+   **NOTE:** You shouldn't encounter any package errors when using a newer version of Node. However, if you do run into issues, please switch to the Node version specified for this project, or feel free to open an issue describing the error.
+
 4. **Configure environment variables:**
    Create a `.env` file in the root directory and set the following variables:
 
@@ -33,7 +51,8 @@ This is a simple Node.js/Express RESTful API for managing a car dealership, supp
    - `ADMIN_SLUG`: Generate randomly using `UUID4` or any other secure, non-readable slug generator.
    - `JWT_SECRET_KEY`: Generate randomly using `UUID4` or any other secure key generator.
    - `NODE_ENV`: Set to `dev` for local development or `production` for production build.
-   - `DB_NAME`: MongoDB database name (default: `no-database-specified`)
+   - `DB_NAME`: MongoDB database name (default: `no-database-specified`).
+   - `DB_CONNECTION_MODE`: Should be set to `LOCAL`
 
    **If you run your own MongoDB server (e.g., on a virtual machine like Linode):**
    - `DB_HOST`: MongoDB database host (default: `localhost`)
@@ -52,6 +71,24 @@ This is a simple Node.js/Express RESTful API for managing a car dealership, supp
    ```
 
 The server will run on the configured port (default: 5000).
+
+### Running tests
+1. **Configure environment variables:**
+   In the root directory create a `.jest` directory and within it create a `setEnvVars.js` file. The file is meant to provide access environmental variables for jest during tests. For this project the environmental variable below is required in `.jest/setEnvVars.js` before conducting the test.
+   ```bash
+   # The ADMIN_SLUG here must be the same in your '.env' file!
+   process.env.ADMIN_SLUG = "928f8.....";
+   ```
+2. **Testing:**
+   - To run all tests from anywhere in the project, use this command below.
+   ```bash
+   npm run test
+   ```
+   - If jest isn't globally available in your development environment, run individual test files by using the command below. Ensure you replace `path_to_test_file` with actual test file path i.e `__tests__/controllers/AuthController.test.ts`
+   ```bash
+   npm exec -- jest --detectOpenHandles path_to_test_file
+   ```
+
 
 ## API Endpoints
 
